@@ -7,6 +7,8 @@ class Room extends Equatable {
 
   const Room({required this.walls});
 
+  double get paintableArea => walls.map((w) => w.paintableArea).fold(0, (acc, n) => acc + n);
+
   @override
   List<Object?> get props => [walls];
 }
