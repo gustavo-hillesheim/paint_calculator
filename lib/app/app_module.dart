@@ -1,10 +1,10 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
-import 'hello_world_widget.dart';
+import 'layers/paint_room/paint_room_module.dart';
 
 class AppModule extends Module {
   @override
   List<ModularRoute> get routes => [
-        ChildRoute(Modular.initialRoute, child: (_, __) => const HelloWorldWidget()),
+        ModuleRoute(Modular.initialRoute, module: PaintRoomModule()),
       ];
 }

@@ -1,6 +1,8 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 
+import 'core/presenter/theme.dart';
+
 class AppWidget extends StatelessWidget {
   const AppWidget({Key? key}) : super(key: key);
 
@@ -8,7 +10,7 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Paint Calculator',
-      theme: ThemeData.light(),
+      theme: AppTheme.lightTheme,
       routeInformationParser: Modular.routeInformationParser,
       routerDelegate: Modular.routerDelegate,
     );
