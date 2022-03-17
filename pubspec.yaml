@@ -12,11 +12,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_modular:
   fpdart:
+  equatable:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
+  test:
 
 flutter:
   uses-material-design: true
