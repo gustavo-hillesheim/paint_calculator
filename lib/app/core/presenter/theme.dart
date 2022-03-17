@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData get lightTheme {
     const primaryColor = Colors.deepPurple;
+    const secondaryColor = Colors.deepPurpleAccent;
     final backgroundColor = Colors.grey.shade50;
     const onBackgroundColor = Colors.black87;
 
@@ -10,6 +11,7 @@ class AppTheme {
       brightness: Brightness.light,
       colorScheme: ColorScheme.light(
         primary: primaryColor,
+        secondary: secondaryColor,
         background: backgroundColor,
         onBackground: onBackgroundColor,
         surface: backgroundColor,

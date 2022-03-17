@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:paint_calculator/app/core/presenter/formatter.dart';
+import 'package:paint_calculator/app/layers/paint_room/domain/entities/room.dart';
+import 'package:paint_calculator/app/layers/paint_room/presenter/paint_for_room_calculation_page/paint_for_room_calculation_controller.dart';
+import 'package:paint_calculator/app/layers/paint_room/presenter/paint_for_room_calculation_page/widgets/paint_calculation_result.dart';
 
 import '../../../../core/presenter/widgets/primary_button.dart';
 import '../../../../core/presenter/dimensions.dart';
@@ -12,7 +17,8 @@ class PaintForRoomCalculationPage extends StatefulWidget {
   State<PaintForRoomCalculationPage> createState() => _PaintForRoomCalculationPageState();
 }
 
-class _PaintForRoomCalculationPageState extends State<PaintForRoomCalculationPage> {
+class _PaintForRoomCalculationPageState
+    extends ModularState<PaintForRoomCalculationPage, PaintForRoomCalculationController> {
   late Wall wallOne;
   late Wall wallTwo;
   late Wall wallThree;
@@ -25,6 +31,12 @@ class _PaintForRoomCalculationPageState extends State<PaintForRoomCalculationPag
     wallTwo = _createInitialWall();
     wallThree = _createInitialWall();
     wallFour = _createInitialWall();
+  }
+
+  @override
+  void dispose() {
+    controller.close();
+    super.dispose();
   }
 
   Wall _createInitialWall() {
@@ -96,15 +108,34 @@ class _PaintForRoomCalculationPageState extends State<PaintForRoomCalculationPag
           ),
           Padding(
             padding: const EdgeInsets.all(kMediumSpace),
-            child: PrimaryButton(
-              onPressed: _calculatePaintBucketsNeeded,
-              label: const Text('Calcular'),
-            ),
+            child: Builder(builder: (context) {
+              return PrimaryButton(
+                onPressed: () => _calculatePaintBucketsNeeded(context),
+                label: const Text('Calcular'),
+              );
+            }),
           ),
         ],
       ),
     );
   }
 
-  void _calculatePaintBucketsNeeded() {}
+  void _calculatePaintBucketsNeeded(BuildContext context) async {
+    final room = Room(walls: [wallOne, wallTwo, wallThree, wallFour]);
+    final calculationResult = await controller.calculate(room);
+
+    calculationResult.fold(
+      (failure) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(failure.message, style: const TextStyle(color: Colors.red)),
+      )),
+      (paintBucketsNeeded) => showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (_) => PaintCalculationResult(
+          buckets: paintBucketsNeeded,
+          onTapOk: () => Navigator.pop(context),
+        ),
+      ),
+    );
+  }
 }
