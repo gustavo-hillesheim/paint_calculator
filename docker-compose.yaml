@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    entrypoint: .docker/web_server.sh
+    container_name: paint_calculator
+    ports:
+      - "5000:5000"
