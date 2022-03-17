@@ -25,6 +25,7 @@ class WallInfoCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -93,17 +94,21 @@ class WallInfoCard extends StatelessWidget {
       context: context,
       builder: (_) {
         return Dialog(
-            child: Padding(
-          padding: const EdgeInsets.all(kMediumSpace),
-          child: WallInfoForm(
-            identifier: name,
-            initialValue: wall,
-            onSaved: (newWall) {
-              onChanged(newWall);
-              Navigator.pop(context);
-            },
+          child: Padding(
+            padding: const EdgeInsets.all(kMediumSpace),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: WallInfoForm(
+                identifier: name,
+                initialValue: wall,
+                onSaved: (newWall) {
+                  onChanged(newWall);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
           ),
-        ));
+        );
       },
     );
   }

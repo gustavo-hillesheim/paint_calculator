@@ -107,6 +107,7 @@ class _WallInfoFormState extends State<WallInfoForm> {
           PrimaryButton(
             label: const Text('Salvar'),
             onPressed: _save,
+            size: ButtonSize.expanded,
           ),
         ],
       ),
