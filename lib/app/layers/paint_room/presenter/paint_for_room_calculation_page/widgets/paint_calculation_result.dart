@@ -43,7 +43,7 @@ class PaintCalculationResult extends StatelessWidget {
           const SizedBox(height: kExtraSmallSpace),
         ],
         const SizedBox(height: kMediumSpace - kExtraSmallSpace),
-        !small
+        onTapOk != null
             ? PrimaryButton(
                 label: const Text('OK'),
                 onPressed: onTapOk!,

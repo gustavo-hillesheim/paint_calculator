@@ -84,39 +84,7 @@ class _PaintForRoomCalculationPageState
                   child: isBigScreen ? _buildTwoColumnWallList() : _buildSingleColumnWallList(),
                 ),
                 if (isBigScreen) ...[
-                  StreamBuilder<Either<Failure, List<PaintBucketNeeded>>>(
-                    stream: controller.stream,
-                    builder: (_, snapshot) {
-                      if (!snapshot.hasData) {
-                        return const SizedBox.shrink();
-                      }
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text(
-                            'Erro: ${snapshot.error.toString()}',
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                        );
-                      }
-                      final result = snapshot.data!;
-                      if (result.isLeft()) {
-                        final failure = result.getLeft().toNullable()!;
-                        return Center(
-                          child: Text(
-                            'Erro: ${failure.message}',
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                        );
-                      } else {
-                        final buckets = result.getRight().toNullable()!;
-                        return PaintCalculationResult(
-                          buckets: buckets,
-                          onTapOk: null,
-                          small: true,
-                        );
-                      }
-                    },
-                  ),
+                  _buildResultStreamBuilder(),
                   const SizedBox(height: kMediumSpace),
                 ],
                 Padding(
@@ -178,6 +146,7 @@ class _PaintForRoomCalculationPageState
 
   Widget _buildTwoColumnWallList() {
     const maxCardWidth = 350.0;
+    const cardConstraints = BoxConstraints(maxWidth: maxCardWidth);
 
     return ListView(
       shrinkWrap: true,
@@ -187,7 +156,7 @@ class _PaintForRoomCalculationPageState
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: maxCardWidth),
+              constraints: cardConstraints,
               child: WallInfoCard(
                 name: 'Parede 1',
                 wall: wallOne,
@@ -198,7 +167,7 @@ class _PaintForRoomCalculationPageState
             ),
             const SizedBox(width: kMediumSpace),
             ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: maxCardWidth),
+              constraints: cardConstraints,
               child: WallInfoCard(
                 name: 'Parede 2',
                 wall: wallTwo,
@@ -214,7 +183,7 @@ class _PaintForRoomCalculationPageState
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: maxCardWidth),
+              constraints: cardConstraints,
               child: WallInfoCard(
                 name: 'Parede 3',
                 wall: wallThree,
@@ -225,7 +194,7 @@ class _PaintForRoomCalculationPageState
             ),
             const SizedBox(width: kMediumSpace),
             ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: maxCardWidth),
+              constraints: cardConstraints,
               child: WallInfoCard(
                 name: 'Parede 4',
                 wall: wallFour,
@@ -240,6 +209,42 @@ class _PaintForRoomCalculationPageState
     );
   }
 
+  Widget _buildResultStreamBuilder() {
+    return StreamBuilder<Either<Failure, List<PaintBucketNeeded>>>(
+      stream: controller.stream,
+      builder: (_, snapshot) {
+        if (!snapshot.hasData) {
+          return const SizedBox.shrink();
+        }
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              'Erro: ${snapshot.error.toString()}',
+              style: const TextStyle(color: Colors.red),
+            ),
+          );
+        }
+        final result = snapshot.data!;
+        if (result.isLeft()) {
+          final failure = result.getLeft().toNullable()!;
+          return Center(
+            child: Text(
+              'Erro: ${failure.message}',
+              style: const TextStyle(color: Colors.red),
+            ),
+          );
+        } else {
+          final buckets = result.getRight().toNullable()!;
+          return PaintCalculationResult(
+            buckets: buckets,
+            onTapOk: null,
+            small: true,
+          );
+        }
+      },
+    );
+  }
+
   void _calculatePaintBucketsNeeded(BuildContext context, bool isBigScreen) async {
     final room = Room(walls: [wallOne, wallTwo, wallThree, wallFour]);
     final calculationResult = await controller.calculate(room);
@@ -249,22 +254,26 @@ class _PaintForRoomCalculationPageState
         (failure) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(failure.message, style: const TextStyle(color: Colors.red)),
         )),
-        (paintBucketsNeeded) => showModalBottomSheet(
-          backgroundColor: Colors.transparent,
-          context: context,
-          builder: (_) => Container(
-            padding: const EdgeInsets.all(kMediumSpace),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(kMediumSpace)),
-            ),
-            child: PaintCalculationResult(
-              buckets: paintBucketsNeeded,
-              onTapOk: () => Navigator.pop(context),
-            ),
-          ),
-        ),
+        (paintBucketsNeeded) => _showResultBottomSheet(context, paintBucketsNeeded),
       );
     }
+  }
+
+  void _showResultBottomSheet(BuildContext context, List<PaintBucketNeeded> paintBucketsNeeded) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (_) => Container(
+        padding: const EdgeInsets.all(kMediumSpace),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(kMediumSpace)),
+        ),
+        child: PaintCalculationResult(
+          buckets: paintBucketsNeeded,
+          onTapOk: () => Navigator.pop(context),
+        ),
+      ),
+    );
   }
 }
