@@ -63,21 +63,33 @@ class _PaintForRoomCalculationPageState extends State<PaintForRoomCalculationPag
                 WallInfoCard(
                   name: 'Parede 1',
                   wall: wallOne,
+                  onChanged: (newWallOne) => setState(() {
+                    wallOne = newWallOne;
+                  }),
                 ),
                 const SizedBox(height: kMediumSpace),
                 WallInfoCard(
                   name: 'Parede 2',
                   wall: wallTwo,
+                  onChanged: (newWalltwo) => setState(() {
+                    wallTwo = newWalltwo;
+                  }),
                 ),
                 const SizedBox(height: kMediumSpace),
                 WallInfoCard(
                   name: 'Parede 3',
                   wall: wallThree,
+                  onChanged: (newWallThree) => setState(() {
+                    wallThree = newWallThree;
+                  }),
                 ),
                 const SizedBox(height: kMediumSpace),
                 WallInfoCard(
                   name: 'Parede 4',
                   wall: wallFour,
+                  onChanged: (newWallFour) => setState(() {
+                    wallFour = newWallFour;
+                  }),
                 ),
               ],
             ),

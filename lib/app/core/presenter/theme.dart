@@ -24,6 +24,9 @@ class AppTheme {
         color: Colors.transparent,
         foregroundColor: onBackgroundColor,
       ),
+      inputDecorationTheme: const InputDecorationTheme(
+        border: OutlineInputBorder(),
+      ),
     );
   }
 }

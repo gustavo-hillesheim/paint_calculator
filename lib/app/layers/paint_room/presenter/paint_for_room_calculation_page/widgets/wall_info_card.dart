@@ -1,19 +1,22 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:paint_calculator/app/core/presenter/formatter.dart';
 
 import '../../../../../core/presenter/dimensions.dart';
+import '../../../../../core/presenter/formatter.dart';
 import '../../../domain/entities/wall.dart';
+import 'wall_info_form.dart';
 
 class WallInfoCard extends StatelessWidget {
   final String name;
   final Wall wall;
+  final ValueChanged<Wall> onChanged;
 
   const WallInfoCard({
     Key? key,
     required this.wall,
     required this.name,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -24,7 +27,21 @@ class WallInfoCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(name, style: Theme.of(context).textTheme.headline6),
+            Row(
+              children: [
+                Text(name, style: Theme.of(context).textTheme.headline6),
+                const Spacer(),
+                IconButton(
+                  visualDensity: VisualDensity.compact,
+                  splashRadius: 24,
+                  onPressed: () => _showEditDialog(context),
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.black45,
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: kMediumSpace),
             Row(
               children: [
@@ -68,6 +85,26 @@ class WallInfoCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showEditDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return Dialog(
+            child: Padding(
+          padding: const EdgeInsets.all(kMediumSpace),
+          child: WallInfoForm(
+            identifier: name,
+            initialValue: wall,
+            onSaved: (newWall) {
+              onChanged(newWall);
+              Navigator.pop(context);
+            },
+          ),
+        ));
+      },
     );
   }
 }
