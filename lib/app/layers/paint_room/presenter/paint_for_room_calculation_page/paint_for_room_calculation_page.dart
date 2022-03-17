@@ -1,11 +1,40 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/presenter/widgets/primary_button.dart';
 import '../../../../core/presenter/dimensions.dart';
 import '../../domain/entities/wall.dart';
 import 'widgets/wall_info_card.dart';
 
-class PaintForRoomCalculationPage extends StatelessWidget {
+class PaintForRoomCalculationPage extends StatefulWidget {
   const PaintForRoomCalculationPage({Key? key}) : super(key: key);
+
+  @override
+  State<PaintForRoomCalculationPage> createState() => _PaintForRoomCalculationPageState();
+}
+
+class _PaintForRoomCalculationPageState extends State<PaintForRoomCalculationPage> {
+  late Wall wallOne;
+  late Wall wallTwo;
+  late Wall wallThree;
+  late Wall wallFour;
+
+  @override
+  void initState() {
+    super.initState();
+    wallOne = _createInitialWall();
+    wallTwo = _createInitialWall();
+    wallThree = _createInitialWall();
+    wallFour = _createInitialWall();
+  }
+
+  Wall _createInitialWall() {
+    return const Wall(
+      height: 3,
+      width: 5,
+      doorsQuantity: 1,
+      windowsQuantity: 2,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,63 +60,39 @@ class PaintForRoomCalculationPage extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: kMediumSpace),
               children: [
-                const WallInfoCard(
+                WallInfoCard(
                   name: 'Parede 1',
-                  wall: Wall(
-                    height: 3,
-                    width: 5,
-                    doorsQuantity: 1,
-                    windowsQuantity: 2,
-                  ),
+                  wall: wallOne,
                 ),
                 const SizedBox(height: kMediumSpace),
-                const WallInfoCard(
+                WallInfoCard(
                   name: 'Parede 2',
-                  wall: Wall(
-                    height: 3,
-                    width: 5,
-                    doorsQuantity: 1,
-                    windowsQuantity: 2,
-                  ),
+                  wall: wallTwo,
                 ),
                 const SizedBox(height: kMediumSpace),
-                const WallInfoCard(
+                WallInfoCard(
                   name: 'Parede 3',
-                  wall: Wall(
-                    height: 3,
-                    width: 5,
-                    doorsQuantity: 1,
-                    windowsQuantity: 2,
-                  ),
+                  wall: wallThree,
                 ),
                 const SizedBox(height: kMediumSpace),
-                const WallInfoCard(
+                WallInfoCard(
                   name: 'Parede 4',
-                  wall: Wall(
-                    height: 3,
-                    width: 5,
-                    doorsQuantity: 1,
-                    windowsQuantity: 2,
-                  ),
+                  wall: wallFour,
                 ),
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(kMediumSpace),
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text('Calcular'),
-              style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(const Size(
-                  double.infinity,
-                  44,
-                )),
-              ),
+            child: PrimaryButton(
+              onPressed: _calculatePaintBucketsNeeded,
+              label: const Text('Calcular'),
             ),
           ),
         ],
       ),
     );
   }
+
+  void _calculatePaintBucketsNeeded() {}
 }
