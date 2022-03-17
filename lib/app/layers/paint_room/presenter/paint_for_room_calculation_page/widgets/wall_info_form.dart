@@ -31,6 +31,7 @@ class _WallInfoFormState extends State<WallInfoForm> {
   final _widthController = TextEditingController();
   final _doorsQuantityController = TextEditingController();
   final _windowsQuantityController = TextEditingController();
+  String? _validationError;
 
   @override
   void initState() {
@@ -98,6 +99,10 @@ class _WallInfoFormState extends State<WallInfoForm> {
             validator: Validator.integerNumber(positive: true),
             keyboardType: const TextInputType.numberWithOptions(),
           ),
+          if (_validationError != null) ...[
+            const SizedBox(height: kMediumSpace),
+            Text(_validationError!, style: const TextStyle(color: Colors.red)),
+          ],
           const SizedBox(height: kMediumSpace),
           PrimaryButton(
             label: const Text('Salvar'),
@@ -116,7 +121,23 @@ class _WallInfoFormState extends State<WallInfoForm> {
         doorsQuantity: Parser.integerNumber(_doorsQuantityController.text)!,
         windowsQuantity: Parser.integerNumber(_windowsQuantityController.text)!,
       );
-      widget.onSaved(newWall);
+      String? validationError;
+      if (newWall.area < 1) {
+        validationError = 'A área da parede não pode ser menor que 1m²';
+      }
+      if (newWall.area > 15 && validationError == null) {
+        validationError = 'A área da parede não pode ser maior que 15m²';
+      }
+      if (newWall.area / 2 < newWall.occupiedArea && validationError == null) {
+        validationError = 'A parede não pode ter portas ou janelas ocupando mais da metade do seu espaço';
+      }
+      if (validationError == null) {
+        widget.onSaved(newWall);
+      } else {
+        setState(() {
+          _validationError = validationError;
+        });
+      }
     }
   }
 }
