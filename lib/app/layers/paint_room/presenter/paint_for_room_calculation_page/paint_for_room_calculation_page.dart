@@ -41,10 +41,10 @@ class _PaintForRoomCalculationPageState
 
   Wall _createInitialWall() {
     return const Wall(
-      height: 3,
-      width: 5,
-      doorsQuantity: 1,
-      windowsQuantity: 2,
+      height: 1,
+      width: 1,
+      doorsQuantity: 0,
+      windowsQuantity: 0,
     );
   }
 
