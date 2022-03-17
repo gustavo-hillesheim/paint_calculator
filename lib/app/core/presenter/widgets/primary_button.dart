@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:paint_calculator/app/core/presenter/dimensions.dart';
+
+import '../dimensions.dart';
 
 class PrimaryButton extends StatelessWidget {
   final Widget label;
