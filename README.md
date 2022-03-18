@@ -42,14 +42,14 @@ A aplicação pode ser acessada de 3 formas: acesso pela URL pública, execuçã
 ## Acesso por URL pública
 
 Para acessar a aplicação pela sua URL pública, basta acessar https://paintcalculator.gustavohill.dev.<br>
-Observação: Essa é a aplicação web, caso deseje acessar a aplicação Android deverá usar a [execução com Flutter](#execucao-com-flutter).
+Observação: Essa é a aplicação web, caso deseje acessar a aplicação Android deverá usar a [execução com Flutter](#execução-com-flutter).
 
 ## Execução com Docker
 
 Para a execução com Docker você precisará ter [Docker](https://www.docker.com) e [Docker Compose](https://docs.docker.com/compose/) instalados no seu ambiente.<br>
 Para executar a aplicação basta executar o comando `make docker_start` ou `docker-compose up`, após isso será buildada a imagem do Docker e executada em seguida. A aplicação estará disponível na porta 5000.<br>
 Para finalizar a aplicação basta executar o comando `make docker_stop` ou `docker-compose down`.<br>
-Observação: Essa é a aplicação web, caso deseje acessar a aplicação Android deverá usar a [execução com Flutter](#execucao-com-flutter).
+Observação: Essa é a aplicação web, caso deseje acessar a aplicação Android deverá usar a [execução com Flutter](#execução-com-flutter).
 
 ## Execução com Flutter
 
