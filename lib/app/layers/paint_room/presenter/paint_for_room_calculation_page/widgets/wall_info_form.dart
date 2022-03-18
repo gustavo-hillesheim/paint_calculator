@@ -47,9 +47,8 @@ class _WallInfoFormState extends State<WallInfoForm> {
     return Form(
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+      child: ListView(
+        shrinkWrap: true,
         children: [
           Text(
             'Editar ${widget.identifier}',
